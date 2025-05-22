@@ -1,0 +1,29 @@
+<div class="form-container">
+  <h2>Add New Book</h2>
+  <form (ngSubmit)="onSubmit()" #bookForm="ngForm">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" id="title" name="title" [(ngModel)]="book.title" required>
+    </div>
+
+    <div class="form-group">
+      <label for="author">Author</label>
+      <input type="text" id="author" name="author" [(ngModel)]="book.author" required>
+    </div>
+
+    <div class="form-group">
+      <label for="isbn">ISBN</label>
+      <input type="text" id="isbn" name="isbn" [(ngModel)]="book.isbn" required>
+    </div>
+
+    <div class="form-group">
+      <label for="publicationDate">Publication Date</label>
+      <input type="date" id="publicationDate" name="publicationDate" [(ngModel)]="book.publicationDate" required>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn-cancel" routerLink="/">Cancel</button>
+      <button type="submit" class="btn btn-submit" [disabled]="!bookForm.form.valid">Add Book</button>
+    </div>
+  </form>
+</div>
