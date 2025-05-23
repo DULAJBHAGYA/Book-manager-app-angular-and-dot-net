@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 
-import { Book } from '../../models/book';
+import { Book, AddBookDto } from '../../models/book';
 import { BookService } from '../../services/book.service';
 
 @Component({
@@ -14,21 +14,89 @@ import { BookService } from '../../services/book.service';
   styleUrls: ['./add-book.component.css']
 })
 export class AddBookComponent implements OnInit {
-  book: Book = {
-    id: 0,
+  book: AddBookDto = {
     title: '',
     author: '',
     isbn: '',
-    publicationDate: ''
+    description: '',
+    category: '',
+    publisher: '',
+    publicationDate: new Date(),
+    coverImageUrl: ''
   };
 
-  constructor(private bookService: BookService, private router: Router) {}
+  constructor(private bookService: BookService, private router: Router, private location: Location,
+) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
+
+  showModal: boolean = false;
+  modalTitle: string = '';
+  modalMessage: string = '';
+  modalType: 'success' | 'error' = 'success';
+
+ 
 
   onSubmit(): void {
-    this.bookService.addBook(this.book).subscribe(() => {
-      this.router.navigate(['/']);
+    const bookData: AddBookDto = {
+      title: this.book.title.trim(),
+      description: this.book.description.trim(),
+      author: this.book.author.trim(),
+      isbn: this.book.isbn.trim(),
+      category: this.book.category,
+      publisher: this.book.publisher.trim(),
+      publicationDate: this.formatDate(this.book.publicationDate),
+      coverImageUrl: this.book.coverImageUrl?.trim() || undefined
+    };
+
+    this.bookService.addBook(bookData).subscribe({
+      next: (response: Book) => {
+        console.log('Book added successfully:', response);
+        this.showSuccessModal('Success!', 'Book has been added successfully.');
+      },
+      error: (error) => {
+        console.error('Error adding book:', error);
+        this.showErrorModal('Update Failed', 'Failed to update book. Please try again.');
+      }
     });
+  }
+
+  private showSuccessModal(title: string, message: string): void {
+    this.modalTitle = title;
+    this.modalMessage = message;
+    this.modalType = 'success';
+    this.showModal = true;
+  }
+
+  private showErrorModal(title: string, message: string): void {
+    this.modalTitle = title;
+    this.modalMessage = message;
+    this.modalType = 'error';
+    this.showModal = true;
+  }
+
+  onModalOk(): void {
+    this.showModal = false;
+    if (this.modalType === 'success') {
+      this.router.navigate(['/']);
+    } else {
+      
+    }
+  }
+
+  closeModal(): void {
+    this.showModal = false;
+  }
+
+  goBack(): void {
+    this.location.back();
+  }
+
+  private formatDate(date: Date | string): Date {
+    if (typeof date === 'string') {
+      return new Date(date);
+    }
+    return date;
   }
 }

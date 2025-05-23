@@ -4,23 +4,30 @@ using server.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Add CORS policy to allow Angular dev server (localhost:4200)
+// Enhanced CORS policy to allow Angular dev server and production
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAngularDevClient",
+    options.AddPolicy("AllowAngularClient",
         policy =>
         {
-            policy.WithOrigins("http://localhost:4200")
+            policy.WithOrigins(
+                    "http://localhost:4200",      // Angular dev server
+                    "https://localhost:4200",     // Angular dev server with HTTPS
+                    "http://localhost:3000",      // Alternative port
+                    "https://your-production-domain.com" // Add your production domain
+                  )
                   .AllowAnyHeader()
-                  .AllowAnyMethod();
+                  .AllowAnyMethod()
+                  .AllowCredentials(); // If you need to send cookies/auth headers
         });
 });
 
@@ -35,8 +42,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// Use CORS middleware with the defined policy
-app.UseCors("AllowAngularDevClient");
+// Use CORS middleware with the defined policy (must be before UseAuthorization)
+app.UseCors("AllowAngularClient");
 
 app.UseAuthorization();
 

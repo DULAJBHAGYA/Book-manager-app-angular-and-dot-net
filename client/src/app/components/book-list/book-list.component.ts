@@ -18,10 +18,12 @@ export class BookListComponent implements OnInit {
   filteredBooks: Book[] = [];
   searchTerm: string = '';
   
-  // New filter properties
   sortOption: string = 'newest';
   categories: string[] = ['Action', 'Adventure', 'Animation', 'Biography', 'Comedy', 'Crime', 'Fantasy', 'History', 'Horror', 'Mystery', 'Romance', 'Sci-fi'];
   selectedCategories: string[] = [];
+  
+  // Add filter toggle property
+  isFilterOpen: boolean = false;
 
   constructor(private bookService: BookService, private router: Router) {}
 
@@ -30,16 +32,34 @@ export class BookListComponent implements OnInit {
   }
 
   loadBooks(): void {
-    this.bookService.getBooks().subscribe(books => {
-      this.books = books;
-      this.applyFilters();
+    this.bookService.getBooks().subscribe({
+      next: (books) => {
+        this.books = books;
+        this.applyFilters();
+      },
+      error: (error) => {
+        console.error('Error loading books:', error);
+        alert('Failed to load books. Please check if the server is running.');
+      }
     });
   }
 
-  deleteBook(id: number): void {
+  deleteBook(id: string | undefined): void {
+    if (!id) {
+      alert('Invalid book ID');
+      return;
+    }
+
     if (confirm('Are you sure you want to delete this book?')) {
-      this.bookService.deleteBook(id).subscribe(() => {
-        this.loadBooks();
+      this.bookService.deleteBook(id).subscribe({
+        next: () => {
+          this.loadBooks();
+          alert('Book deleted successfully!');
+        },
+        error: (error) => {
+          console.error('Error deleting book:', error);
+          alert('Failed to delete book. Please try again.');
+        }
       });
     }
   }
@@ -47,8 +67,7 @@ export class BookListComponent implements OnInit {
   searchBooks(): void {
     this.applyFilters();
   }
-  
-  // New methods for filtering and sorting
+    
   toggleCategory(category: string): void {
     const index = this.selectedCategories.indexOf(category);
     if (index === -1) {
@@ -58,15 +77,14 @@ export class BookListComponent implements OnInit {
     }
     this.applyFilters();
   }
-  
+    
   applySorting(): void {
     this.applyFilters();
   }
-  
+    
   applyFilters(): void {
     let result = [...this.books];
-    
-    // Apply search filter if search term exists
+        
     if (this.searchTerm) {
       const term = this.searchTerm.toLowerCase();
       result = result.filter(book =>
@@ -75,22 +93,28 @@ export class BookListComponent implements OnInit {
         book.isbn.toLowerCase().includes(term)
       );
     }
-    
-    // Apply category filter if any categories are selected
+        
     if (this.selectedCategories.length > 0) {
       result = result.filter(book => {
         if (!book.category) return false;
         return this.selectedCategories.includes(book.category);
       });
     }
-    
-    // Apply sorting
+        
     switch (this.sortOption) {
       case 'newest':
-        result.sort((a, b) => (b.id || 0) - (a.id || 0));
+        result.sort((a, b) => {
+          const dateA = new Date(a.publicationDate);
+          const dateB = new Date(b.publicationDate);
+          return dateB.getTime() - dateA.getTime();
+        });
         break;
       case 'oldest':
-        result.sort((a, b) => (a.id || 0) - (b.id || 0));
+        result.sort((a, b) => {
+          const dateA = new Date(a.publicationDate);
+          const dateB = new Date(b.publicationDate);
+          return dateA.getTime() - dateB.getTime();
+        });
         break;
       case 'title':
         result.sort((a, b) => a.title.localeCompare(b.title));
@@ -99,14 +123,18 @@ export class BookListComponent implements OnInit {
         result.sort((a, b) => a.author.localeCompare(b.author));
         break;
     }
-    
+        
     this.filteredBooks = result;
   }
-  
-  // New method for navigation
-  viewBookDetails(bookId: number | undefined): void {
+
+  viewBookDetails(bookId: string | undefined): void {
     if (bookId) {
       this.router.navigate(['/book', bookId]);
     }
+  }
+
+  // Add toggle filter method
+  toggleFilter(): void {
+    this.isFilterOpen = !this.isFilterOpen;
   }
 }

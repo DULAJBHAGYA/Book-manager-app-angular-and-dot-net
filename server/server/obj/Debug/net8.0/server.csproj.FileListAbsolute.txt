@@ -127,10 +127,10 @@ D:\github\Book-manager-app-angular-and-dot-net\server\server\obj\Debug\net8.0\st
 D:\github\Book-manager-app-angular-and-dot-net\server\server\obj\Debug\net8.0\staticwebassets.build.json.cache
 D:\github\Book-manager-app-angular-and-dot-net\server\server\obj\Debug\net8.0\staticwebassets.development.json
 D:\github\Book-manager-app-angular-and-dot-net\server\server\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-D:\github\Book-manager-app-angular-and-dot-net\server\server\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\github\Book-manager-app-angular-and-dot-net\server\server\obj\Debug\net8.0\server.csproj.Up2Date
 D:\github\Book-manager-app-angular-and-dot-net\server\server\obj\Debug\net8.0\server.dll
 D:\github\Book-manager-app-angular-and-dot-net\server\server\obj\Debug\net8.0\refint\server.dll
 D:\github\Book-manager-app-angular-and-dot-net\server\server\obj\Debug\net8.0\server.pdb
 D:\github\Book-manager-app-angular-and-dot-net\server\server\obj\Debug\net8.0\server.genruntimeconfig.cache
 D:\github\Book-manager-app-angular-and-dot-net\server\server\obj\Debug\net8.0\ref\server.dll
+D:\github\Book-manager-app-angular-and-dot-net\server\server\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

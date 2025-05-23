@@ -1,29 +1,39 @@
 <div class="container">
   <div class="header">
     <div class="header-title-wrapper">
-      <img src="../../assets/images/logo.png" alt="Logo" class="logo" />
+      <img src="https://files.fm/u/sdjfjmchsm" alt="">
       <h1 class="header-title">BookTrack</h1>
     </div>
 
     <div class="header-right">
+      
+
       <div class="search-bar">
         <input type="text" [(ngModel)]="searchTerm" (input)="searchBooks()" placeholder="Search books">
         <i class="fas fa-search"></i>
       </div>
 
-      <button class="btn btn-favorite" title="Favorites">
-        <i class="fas fa-heart"></i>
+      <button class="btn btn-filter" (click)="toggleFilter()">
+        <i class="fas fa-filter"></i>
       </button>
+      <!-- <button class="btn btn-favorite" title="Favorites">
+        <i class="fas fa-heart"></i>
+      </button> -->
 
       <button class="btn btn-primary" routerLink="/add-book">Add New Book</button>
     </div>
   </div>
 
   <div class="main-content">
-    <div class="filter-options">
+    <!-- Filter overlay -->
+    <div class="filter-overlay" [class.active]="isFilterOpen" (click)="toggleFilter()"></div>
+    
+    <div class="filter-options" [class.active]="isFilterOpen">
       <div class="filter-section">
+        <!-- Close button for mobile -->
+        <button class="filter-close" (click)="toggleFilter()">&times;</button>
         <h3 class="filter-title">Filter Options</h3>
-        
+                
         <div class="sort-section">
           <h4>Sort By</h4>
           <div class="radio-group">
@@ -45,7 +55,7 @@
             </div>
           </div>
         </div>
-        
+                
         <div class="category-section">
           <h4>Shop by Category</h4>
           <div class="checkbox-group">
@@ -71,9 +81,9 @@
 
       <div class="book-card" *ngFor="let book of filteredBooks" (click)="viewBookDetails(book.id)">
         <img 
-          *ngIf="book.coverImageUrl; else noImage" 
-          [src]="book.coverImageUrl" 
-          alt="{{book.title}} cover" 
+          *ngIf="book.coverImageUrl; else noImage"
+          [src]="book.coverImageUrl"
+          alt="{{book.title}} cover"
           class="book-cover"
         />
         <ng-template #noImage>
@@ -86,10 +96,10 @@
         </div>
 
         <!-- <div class="book-actions">
-          <button class="btn btn-edit" [routerLink]="['/edit-book', book.id]">
+          <button class="btn btn-edit" [routerLink]="['/edit-book', book.id]" (click)="$event.stopPropagation()">
             <i class="fas fa-edit"></i>
           </button>
-          <button class="btn btn-delete" (click)="deleteBook(book.id)">
+          <button class="btn btn-delete" (click)="$event.stopPropagation(); deleteBook(book.id)">
             <i class="fas fa-trash"></i>
           </button>
         </div> -->

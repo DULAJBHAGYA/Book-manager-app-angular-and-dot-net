@@ -15,12 +15,12 @@
 .header-title-wrapper {
   display: flex;
   align-items: center;
-  gap: 10px; 
+  gap: 5px; 
 }
 
 .logo {
-  width: 40px; 
-  height: 40px;
+  width: 30px; 
+  height: 30px;
   object-fit: contain;
 }
 
@@ -114,15 +114,40 @@ h1 {
   color: #6c5dd8;
 }
 
-/* New Layout with Filters */
+.btn-filter {
+  background-color: #6c5dd8 30%;
+  color: #6c5dd8;
+  display: none;
+}
+
+.btn-filter:hover {
+  background-color: #f0f0ff;
+}
+
 .main-content {
   display: flex;
   gap: 30px;
+  position: relative;
 }
 
 .filter-options {
   width: 220px;
   flex-shrink: 0;
+}
+
+.filter-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.filter-overlay.active {
+  display: block;
 }
 
 .filter-section {
@@ -141,12 +166,23 @@ h1 {
   color: #111111;
 }
 
+.filter-close {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #666;
+  cursor: pointer;
+  float: right;
+  margin-top: -5px;
+}
+
 .sort-section h4,
 .category-section h4 {
   font-size: 1rem;
   margin: 15px 0 10px;
   font-weight: 600;
-  color: #333;
+  color: #111111;
 }
 
 .radio-group,
@@ -174,7 +210,6 @@ h1 {
   cursor: pointer;
 }
 
-/* Book List Styling */
 .book-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -196,7 +231,6 @@ h1 {
 
 .book-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(108, 93, 216, 0.15);
 }
 
 .book-info h3 {
@@ -251,6 +285,38 @@ h1 {
   grid-column: 1 / -1;
 }
 
+@media (max-width: 1024px) {
+  .btn-filter {
+    display: flex;
+  }
+
+  .filter-options {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 280px;
+    height: 100vh;
+    background-color: #ffffff;
+    z-index: 1000;
+    padding: 20px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s ease;
+    overflow-y: auto;
+  }
+
+  .filter-options.active {
+    left: 0;
+  }
+
+  .filter-close {
+    display: block;
+  }
+
+  .book-list {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+
 @media (max-width: 768px) {
   .header {
     flex-direction: column;
@@ -274,11 +340,17 @@ h1 {
   }
   
   .filter-options {
-    width: 100%;
-    margin-bottom: 20px;
+    width: 280px;
+    margin-bottom: 0;
   }
 
   .book-list {
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+
+  .btn-filter {
+    display: flex;
+    margin-bottom: 10px;
+    padding: 10px;
   }
 }
