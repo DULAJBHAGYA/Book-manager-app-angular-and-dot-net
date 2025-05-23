@@ -90,6 +90,5 @@ Use the following sample book data to add books manually through the frontend in
 [  
   { "title": "The Great Gatsby", "description": "A story of wealth, love, and the American Dream...", "author": "F. Scott Fitzgerald", "coverImageUrl": "...", "category": "Romance", "publisher": "Charles Scribner's Sons", "isbn": "9780743273565", "publicationDate": "1925-04-10" },  
   { "title": "To Kill a Mockingbird", "description": "Set in the American South during the 1930s...", "author": "Harper Lee", "coverImageUrl": "...", "category": "Classic", "publisher": "J. B. Lippincott & Co.", "isbn": "9780061120084", "publicationDate": "1960-07-11" },
-  ...
 ]
 
