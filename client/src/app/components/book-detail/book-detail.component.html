@@ -1,0 +1,156 @@
+<div class="book-detail-container">
+  <div class="back-button-container">
+    <button class="back-button" (click)="goBack()" title="Go back">
+      <i class="fas fa-chevron-left"></i>
+      <span>Back to Books</span>
+    </button>
+  </div>
+
+  <div *ngIf="book" class="book-detail-content">
+    <div class="book-image-section">
+      <div class="book-image-container">
+        <img 
+          *ngIf="book.coverImageUrl; else noImage" 
+          [src]="book.coverImageUrl" 
+          [alt]="book.title + ' cover'" 
+          class="book-detail-image"
+        />
+        <ng-template #noImage>
+          <div class="book-detail-image placeholder">
+            <i class="fas fa-book-open"></i>
+            <span>No Cover Image</span>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+
+    <div class="book-info-section">
+      <div class="book-header">
+        <div class="title-wrapper">
+          <h1 class="book-title">{{ book.title }}</h1>
+          <div class="book-category" *ngIf="book.category">
+            <span class="category-tag">{{ book.category }}</span>
+          </div>
+        </div>
+        <p class="book-author">by {{ book.author }}</p>
+      </div>
+
+      <div class="book-meta">
+        <div class="meta-grid">
+          <div class="meta-item">
+            <i class="fas fa-barcode"></i>
+            <div>
+              <span class="meta-label">ISBN</span>
+              <span class="meta-value">{{ book.isbn }}</span>
+            </div>
+          </div>
+          
+          <div class="meta-item" *ngIf="book.publicationDate">
+            <i class="fas fa-calendar-alt"></i>
+            <div>
+              <span class="meta-label">Published</span>
+              <span class="meta-value">{{ book.publicationDate | date:'mediumDate' }}</span>
+            </div>
+          </div>
+          
+          <div class="meta-item" *ngIf="book.publisher">
+            <i class="fas fa-building"></i>
+            <div>
+              <span class="meta-label">Publisher</span>
+              <span class="meta-value">{{ book.publisher }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="book-description" *ngIf="book.description">
+        <h3 class="description-title">About This Book</h3>
+        <p class="description-text">{{ book.description }}</p>
+      </div>
+      
+
+      <div class="book-actions">
+        <!-- <button class="btn btn-favorite" (click)="toggleFavorite()">
+          <i class="fas fa-heart" [class.favorited]="isFavorite"></i>
+          {{ isFavorite ? 'Favorited' : 'Add to Favorites' }}
+        </button> -->
+        
+        <button class="btn btn-edit" [routerLink]="['/edit-book', book.id]">
+          <i class="fas fa-pen"></i>
+          Edit Book
+        </button>
+        
+        <button class="btn btn-delete" (click)="showDeleteConfirmation()">
+          <i class="fas fa-trash-alt"></i>
+          Delete Book
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!book && !loading" class="not-found-container">
+    <div class="not-found-content">
+      <i class="fas fa-book-dead"></i>
+      <h2>Book Not Found</h2>
+      <p>We couldn't find the book you're looking for.</p>
+      <button class="btn btn-primary" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i>
+        Back to Books
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <p>Loading book details...</p>
+    </div>
+  </div>
+
+  <div class="modal-overlay" *ngIf="showModal && modalType !== 'confirm'" (click)="closeModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+      <div class="modal-header" [ngClass]="{'success': modalType === 'success', 'error': modalType === 'error'}">
+        <div class="modal-icon">
+          <i *ngIf="modalType === 'success'" class="fas fa-check-circle"></i>
+          <i *ngIf="modalType === 'error'" class="fas fa-exclamation-circle"></i>
+        </div>
+        <h3>{{ modalTitle }}</h3>
+      </div>
+      
+      <div class="modal-body">
+        <p>{{ modalMessage }}</p>
+      </div>
+      
+      <div class="modal-actions">
+        <button class="btn btn-primary" (click)="onModalOk()">
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" *ngIf="showModal && modalType === 'confirm'" (click)="closeModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+      <div class="modal-header confirm">
+        <div class="modal-icon">
+          <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <h3>{{ modalTitle }}</h3>
+      </div>
+      
+      <div class="modal-body">
+        <p>{{ modalMessage }}</p>
+      </div>
+      
+      <div class="modal-actions confirm-actions">
+        <button class="btn btn-delete" (click)="closeModal()">
+          Cancel
+        </button>
+        <button class="btn btn-delete" (click)="confirmDelete()">
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
