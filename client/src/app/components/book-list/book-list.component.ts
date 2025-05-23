@@ -22,7 +22,6 @@ export class BookListComponent implements OnInit {
   categories: string[] = ['Action', 'Adventure', 'Animation', 'Biography', 'Comedy', 'Crime', 'Fantasy', 'History', 'Horror', 'Mystery', 'Romance', 'Sci-fi'];
   selectedCategories: string[] = [];
   
-  // Add filter toggle property
   isFilterOpen: boolean = false;
 
   constructor(private bookService: BookService, private router: Router) {}
@@ -133,7 +132,6 @@ export class BookListComponent implements OnInit {
     }
   }
 
-  // Add toggle filter method
   toggleFilter(): void {
     this.isFilterOpen = !this.isFilterOpen;
   }

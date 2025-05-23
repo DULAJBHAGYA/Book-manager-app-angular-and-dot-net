@@ -24,7 +24,7 @@ const routes: Routes = [
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),
-    provideHttpClient(),  // Add this line
+    provideHttpClient(),  
     importProvidersFrom(FormsModule, FontAwesomeModule)
   ]
 }).catch(err => console.error(err));

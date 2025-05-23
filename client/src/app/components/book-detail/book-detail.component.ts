@@ -80,7 +80,7 @@ export class BookDetailComponent implements OnInit {
   confirmDelete(): void {
     if (!this.book) return;
 
-    this.showModal = false; // Close confirmation modal first
+    this.showModal = false; 
 
     this.bookService.deleteBook(this.book.id!).subscribe({
       next: () => {
