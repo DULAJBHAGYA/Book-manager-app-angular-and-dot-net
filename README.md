@@ -1,4 +1,4 @@
-# Book-manager-app-angular-and-dot-net
+# Book Manager App with Angular and DotNet
 
 This is a full-stack book management application built with Angular 19.2.12 frontend and .NET Core 9.0.300 backend.
 
